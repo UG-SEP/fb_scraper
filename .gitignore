@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pkl
+
+# Django
+*.log
+db.sqlite3
+*.sqlite3
+*.pot
+*.pyc
+media/
+staticfiles/
+local_settings.py
+
+# Environment Variables
+.env
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# Selenium & Browser Drivers
+*.log
+cookies/
+*.crdownload
+*.tmp
+
+# ChromeDriver specific (optional)
+chromedriver
+chromedriver.exe
+
+# Virtual Environments
+venv/
+env/
+ENV/
+
+# Pip files
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Pytest
+.cache/
+.pytest_cache/
+
+# Celery
+celerybeat-schedule
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# System Files
+Thumbs.db

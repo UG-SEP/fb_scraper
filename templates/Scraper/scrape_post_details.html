@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% if post %}{{ post.apartment_name }}{% else %}Post Details{% endif %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-green-50 font-sans">
+  <div class="max-w-5xl mx-auto my-10 bg-white rounded-xl shadow-md overflow-hidden p-4 md:p-6 lg:p-8">
+
+    {% if error %}
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+        <strong class="font-bold">Error:</strong>
+        <span class="block sm:inline">{{ error }}</span>
+      </div>
+    {% endif %}
+
+    {% if post and not post.error %}
+    <!-- Images -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+      {% for img in images %}
+        <div class="w-full h-64 overflow-hidden rounded-xl">
+          <img
+            src="{{ img }}"
+            alt="Post Image {{ forloop.counter }}"
+            class="w-full h-full object-cover"
+          />
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Title & Contact -->
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">{{ post.for_whom|upper }}</span>
+      <span class="text-sm text-gray-500">📞 {{ post.phone }}</span>
+    </div>
+    <h2 class="text-3xl font-semibold">{{ post.title }}</h2>
+    <div class="text-sm text-gray-700 mt-1">📍 {{ post.address }}</div>
+
+    <!-- Property Info -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm text-gray-700 mt-4">
+      <div class="flex items-center space-x-1"><span>🏠</span><span>{{ post.property_type }}</span></div>
+      <div class="flex items-center space-x-1"><span>🛏️</span><span>{{ post.room_type }}</span></div>
+      <div class="flex items-center space-x-1"><span>🚿</span><span>{{ post.bathroom_type }}</span></div>
+      <div class="flex items-center space-x-1"><span>🛋️</span><span>{{ post.furnishing }}</span></div>
+      <div class="flex items-center space-x-1"><span>🏢</span><span>{{ post.gated }}</span></div>
+      <div class="flex items-center space-x-1"><span>📆</span><span>{{ post.availability }}</span></div>
+    </div>
+
+    <!-- Description -->
+    <h3 class="text-xl mt-8 font-semibold">About this Property</h3>
+    <div class="mt-2 flex flex-col space-y-3">
+      {% for detail in post.highlights %}
+        <div class="{% if forloop.counter0|divisibleby:2 %}bg-purple-100{% else %}bg-yellow-100{% endif %} p-4 rounded-xl">
+          {{ detail }}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Amenities -->
+    <h3 class="text-xl mt-8 font-semibold">What this place offers</h3>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm mt-2 text-gray-700">
+      {% for amenity in post.amenities %}
+        <div> - {{ amenity }}</div>
+      {% endfor %}
+    </div>
+
+    <!-- Nearby Places -->
+    <h3 class="text-xl mt-8 font-semibold">Nearby</h3>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm mt-2 text-gray-700">
+      {% for place in post.nearby_places %}
+        <div>📍 {{ place }}</div>
+      {% endfor %}
+    </div>
+
+    <!-- Safety Section -->
+    <div class="mt-8 p-5 border rounded-xl">
+      <h3 class="font-semibold mb-2">Safe Streets, Safer Choices</h3>
+      <p class="text-sm text-gray-600">{{ post.safety_note }}</p>
+      <div class="mt-3 text-sm">
+        <div class="text-red-600">Nearby Police Station: {{ post.nearby_police_station }}</div>
+        <div>Gated Society: {{ post.gated }}</div>
+      </div>
+    </div>
+
+    <!-- Connectivity -->
+    <h3 class="text-xl mt-8 font-semibold">Connectivity</h3>
+    <div class="text-sm mt-2 space-y-1">
+      <div>🚇 Metro Station: {{ post.metro_connectivity }}</div>
+      <div>🚌 Bus Stand: {{ post.bus_connectivity }}</div>
+      <div>🚖 Taxi/Cab: {{ post.taxi_connectivity }}</div>
+      <div class="mt-3">
+        <iframe
+          class="w-full h-72 rounded-md"
+          style="border:0;"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q={{ post.address_google_map_location|urlencode }}&output=embed">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="mt-8 p-5 border-t flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div>
+        <div class="text-sm text-gray-500">Security Deposit</div>
+        <div class="text-xl font-semibold text-gray-900">₹{{ post.deposit }}</div>
+        <div class="text-sm text-gray-500 mt-2">Monthly Rent</div>
+        <div class="text-2xl font-semibold text-green-700">₹{{ post.rent }}</div>
+      </div>
+      <button class="bg-green-600 text-white px-6 py-2 rounded-lg shadow-sm hover:bg-green-700">Add to Favourite</button>
+    </div>
+    {% else %}
+    <p class="text-red-500">{{ post.error }}</p>
+    {% endif %}
+  </div>
+</body>
+</html>
